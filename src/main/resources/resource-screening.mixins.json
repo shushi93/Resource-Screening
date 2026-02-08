@@ -1,0 +1,25 @@
+{
+  "required": true,
+  "package": "resource.modid.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "ExampleMixin",
+    "TitleScreenMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  },
+  "parent": "",
+  "mixinPriority": -1,
+  "server": [],
+  "minVersion": "",
+  "plugin": "",
+  "setSourceFile": false,
+  "priority": -1,
+  "refmap": "",
+  "target": "",
+  "verbose": false
+}
