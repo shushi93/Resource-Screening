@@ -3,8 +3,12 @@
   "package": "resource.modid.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+<<<<<<< HEAD
     "ExampleMixin",
     "TitleScreenMixin"
+=======
+    "ExampleMixin"
+>>>>>>> dbec9be (sync local code (redirect button to screen isnt working yet))
   ],
   "injectors": {
     "defaultRequire": 1
@@ -12,6 +16,7 @@
   "overwrites": {
     "requireAnnotations": true
   },
+<<<<<<< HEAD
   "parent": "",
   "mixinPriority": -1,
   "server": [],
@@ -22,4 +27,13 @@
   "refmap": "",
   "target": "",
   "verbose": false
+=======
+  "client": [
+    "TitleScreenMixin",
+    "ResourceScreenMixin"
+  ],
+  "mixinextras": {
+    "minVersion": "0.5.3"
+  }
+>>>>>>> dbec9be (sync local code (redirect button to screen isnt working yet))
 }
