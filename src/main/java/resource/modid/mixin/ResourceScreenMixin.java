@@ -22,7 +22,7 @@ public abstract class ResourceScreenMixin extends Screen {
     @Definition(id = "openScreenButton", method = "Lnet/minecraft/client/gui/screens/options/OptionsScreen;openScreenButton(Lnet/minecraft/network/chat/Component;Ljava/util/function/Supplier;)Lnet/minecraft/client/gui/components/Button;")
     @Definition(id = "RESOURCEPACK", field = "Lnet/minecraft/client/gui/screens/options/OptionsScreen;RESOURCEPACK:Lnet/minecraft/network/chat/Component;")
     @Expression("this.openScreenButton(RESOURCEPACK, ?)")
-    @ModifyArg(method = "init", at = @At(value = "INVOKE", target = "MIXINEXTRAS:EXPRESSIONS")))
+    @ModifyArg(method = "init", at = @At(value = "INVOKE", target = "MIXINEXTRAS:EXPRESSION")))
     private Supplier<Screen> redirectButton(Component component, Supplier<Screen> supplier){
         return supplier;
     }
