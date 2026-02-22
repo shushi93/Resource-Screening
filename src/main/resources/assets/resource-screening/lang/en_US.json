@@ -1,9 +1,3 @@
 {
-<<<<<<< HEAD
-  "mod.button": "Hi"
-=======
-  "mixin.TitleScreenMixin.modButton": "Hi",
-  "gui.examplegui.buttonTest": "Test",
-  "gui.examplegui.labelTest": "Test"
->>>>>>> dbec9be (sync local code (redirect button to screen isnt working yet))
+  "mixin.TitleScreenMixin.modButton": "Hi"
 }
