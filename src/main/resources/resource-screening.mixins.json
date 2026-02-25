@@ -4,7 +4,8 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "ExampleMixin",
-    "TitleScreenMixin"
+    "TitleScreenMixin",
+    "ResourceScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1
@@ -17,9 +18,10 @@
   "priority": -1,
   "verbose": false,
   "client": [
-    "TitleScreenMixin"
+    "TitleScreenMixin",
+    "ResourceScreenMixin"
   ],
   "mixinextras": {
-    "minVersion": "0.5.3"
+    "minVersion": "0.5.0"
   }
 }
