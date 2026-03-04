@@ -2,16 +2,13 @@ package resource.modid.mixin;
 
 import com.llamalad7.mixinextras.expression.Definition;
 import com.llamalad7.mixinextras.expression.Expression;
-import com.llamalad7.mixinextras.sugar.Local;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.options.OptionsScreen;
 import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
-import resource.modid.gui.ExampleGui;
-import resource.modid.gui.ExampleScreen;
+import resource.modid.gui.widget.TextureScreen;
 
 import java.util.function.Supplier;
 
@@ -27,7 +24,7 @@ public abstract class ResourceScreenMixin extends Screen {
     @Expression("this.openScreenButton(RESOURCEPACK, ?)")
     @ModifyArg(method = "init", at = @At("MIXINEXTRAS:EXPRESSION"))
     private Supplier redirectButton(Supplier supplier){
-        supplier = () -> new ExampleScreen(new ExampleGui());
+        supplier = () -> new TextureScreen(Component.empty(), this);
         return supplier;
     }
 }

@@ -1,0 +1,10 @@
+{
+  "gui.widget.TextureFilterScreen.temp": "Test",
+  "gui.widget.TextureFilterScreen.tempLabelMessage": "Test",
+  "gui.widget.TextureFilterScreen.tempLabelTitle": "Test",
+  "gui.widget.TextureScreen.filterButton": "Filter(Put Icon)",
+  "gui.widget.TextureScreen.filterButtonLabel": "Resource Selection Screen",
+  "mixin.TitleScreenMixin.modButton": "Hi",
+  "gui.widget.TextureScreen.backButton": "Return",
+  "gui.widget.TextureScreen.packSelectionScreen": "Go"
+}

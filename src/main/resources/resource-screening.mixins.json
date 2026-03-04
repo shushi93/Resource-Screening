@@ -4,7 +4,6 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "ExampleMixin",
-    "TitleScreenMixin",
     "ResourceScreenMixin"
   ],
   "injectors": {
@@ -18,7 +17,6 @@
   "priority": -1,
   "verbose": false,
   "client": [
-    "TitleScreenMixin",
     "ResourceScreenMixin"
   ],
   "mixinextras": {
