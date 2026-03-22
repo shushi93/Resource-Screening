@@ -1,4 +1,4 @@
-package resource.modid;
+package net.shushi93.resource;
 
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;

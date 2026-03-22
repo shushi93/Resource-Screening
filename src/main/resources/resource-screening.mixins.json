@@ -1,9 +1,9 @@
 {
   "required": true,
-  "package": "resource.modid.mixin",
+  "package": "net.shushi93.resource.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "ExampleMixin",
+    "TitleScreenMixin",
     "ResourceScreenMixin"
   ],
   "injectors": {
@@ -13,9 +13,9 @@
     "requireAnnotations": true
   },
   "mixinPriority": -1,
-  "setSourceFile": false,
+  "setSourceFile": true,
   "priority": -1,
-  "verbose": false,
+  "verbose": true,
   "client": [
     "ResourceScreenMixin"
   ],

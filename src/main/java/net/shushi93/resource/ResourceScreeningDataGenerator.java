@@ -1,4 +1,4 @@
-package resource.modid;
+package net.shushi93.resource;
 
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;

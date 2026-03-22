@@ -1,10 +1,13 @@
 {
-  "gui.widget.TextureFilterScreen.temp": "Test",
-  "gui.widget.TextureFilterScreen.tempLabelMessage": "Test",
-  "gui.widget.TextureFilterScreen.tempLabelTitle": "Test",
-  "gui.widget.TextureScreen.filterButton": "Filter(Put Icon)",
-  "gui.widget.TextureScreen.filterButtonLabel": "Resource Selection Screen",
-  "mixin.TitleScreenMixin.modButton": "Hi",
-  "gui.widget.TextureScreen.backButton": "Return",
-  "gui.widget.TextureScreen.packSelectionScreen": "Go"
+  "gui.components.filter.filterbtn": "Filter",
+  "gui.screens.TextureScreen.filterTooltip": "Filter",
+  "gui.screens.TextureFilterScreen.temp": "Test",
+  "gui.screens.TextureFilterScreen.tempLabelMessage": "Test",
+  "gui.screens.TextureFilterScreen.tempLabelTitle": "Test",
+  "gui.screens.TextureScreen.backButton": "Return",
+  "gui.screens.TextureScreen.filterButton": "Filter(Put Icon)",
+  "gui.screens.TextureScreen.filterButtonLabel": "Resource Selection Screen",
+  "gui.screens.TextureScreen.packSelectionScreen": "Go",
+  "gui.widget.DropdownList.tooltip": "Dropdown",
+  "mixin.TitleScreenMixin.modButton": "Dev"
 }
