@@ -1,6 +1,6 @@
 # [Enter_Mod_Name]
-### Painfully Simple overview
-If you're someone like me who has a bunch of resource packs, like half a stack of them, organizing your textures might be a pain
+### Exceptionally simple overview
+If you're someone like me who has a lot of resource packs, like a whole stack of them, organizing and customizing your textures might be a pain
 <img width="907" height="697" alt="image" src="https://github.com/user-attachments/assets/ff0bf992-46b1-4f4c-8c87-68d75e56f17f" />
 <sub>Notice the size of the scroll bar</sub>
 
