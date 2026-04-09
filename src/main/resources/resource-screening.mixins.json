@@ -1,25 +1,13 @@
 {
-  "required": true,
-  "package": "net.shushi93.resource.mixin",
-  "compatibilityLevel": "JAVA_21",
-  "mixins": [
-    "TitleScreenMixin",
-    "ResourceScreenMixin"
-  ],
-  "injectors": {
-    "defaultRequire": 1
-  },
-  "overwrites": {
-    "requireAnnotations": true
-  },
-  "mixinPriority": -1,
-  "setSourceFile": true,
-  "priority": -1,
-  "verbose": true,
-  "client": [
-    "ResourceScreenMixin"
-  ],
-  "mixinextras": {
-    "minVersion": "0.5.0"
-  }
+	"required": true,
+	"package": "net.shushi93.resource.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
 }

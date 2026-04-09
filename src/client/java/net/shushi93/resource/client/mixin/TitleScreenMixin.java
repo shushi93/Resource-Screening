@@ -22,7 +22,7 @@ public class TitleScreenMixin extends Screen {
     @Inject(at = @At("RETURN"), method = "createNormalMenuOptions")
     private void addModButton(int i, int j, CallbackInfoReturnable<Integer> cir) {
         this.addRenderableWidget(
-            Button.builder(Component.translatable("mixin.TitleScreenMixin.modButton"), _ -> Minecraft.getInstance().setScreen(new TextureScreen(Component.empty(), this)))
+            Button.builder(Component.translatable("mixin.TitleScreenMixin.modButton"), button -> Minecraft.getInstance().setScreen(new TextureScreen(Component.empty(), this)))
                     .bounds(this.width / 2 - 100 + 205, i, 20, 20)
                     .build()
         );
