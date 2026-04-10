@@ -165,5 +165,3 @@ public class DropdownList extends AbstractWidget {
     protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
     }
 }
-
-//TODO after this is done, update version to 0.2.0
