@@ -6,7 +6,7 @@
 	"description": "A Minecraft Java Mod made to make Resource Pack management much easier, for those who have many different resource packs at the same time",
 	"authors": ["shushi93"],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
+		"homepage": "https://modrinth.com/project/resource-screening",
 		"sources": "https://github.com/shushi93/Resource-Screening/"
 	},
 	"license": "GPL-3.0",
