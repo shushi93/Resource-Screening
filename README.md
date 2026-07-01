@@ -1,8 +1,9 @@
 # (WIP) Resource-Screening
 ## Exceptionally simple overview
-If you're someone like me who has a lot of resource packs, like a whole stack of them, organizing and customizing your textures might be a pain
+If you're someone like me who has a lot of resource packs, like a whole stack of them, organizing and customizing your textures might be a pain 
+<br>
 <img width="520" height="400" alt="image" src="https://github.com/user-attachments/assets/ff0bf992-46b1-4f4c-8c87-68d75e56f17f" />
-<sub>Notice the size of the scroll bar</sub>
+<br><sub>Notice the size of the scroll bar</sub>
 
   Sometimes, you might want some textures from pack A and some from Pack B, but you don't want Pack B overriding all of Pack A's textures (if that makes sense)
 For example,
