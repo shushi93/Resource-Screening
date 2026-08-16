@@ -15,12 +15,12 @@ public class TextureFilterScreen extends Screen {
     }
     @Override
     protected void init() {
-        Button temp = Button.builder(Component.translatable("gui.screens.TextureFilterScreen.temp"), (_) -> Minecraft.getInstance().getToastManager().addToast(
+        Button temp = Button.builder(Component.translatable("gui.screens.TextureFilterScreen.temp"), (b) -> Minecraft.getInstance().getToastManager().addToast(
                 SystemToast.multiline(this.minecraft, SystemToast.SystemToastId.NARRATOR_TOGGLE, Component.translatable("gui.screens.TextureFilterScreen.tempLabelTitle"), Component.translatable("gui.screens.TextureFilterScreen.tempLabelMessage"))
         )).bounds(40, 40, 120, 20).build();
         this.addRenderableWidget(temp);
 
-        Button back = Button.builder(Component.translatable("gui.screens.TextureScreen.backButton"), (_) -> onClose()).bounds(TextureScreen.RETURN_LOCATION, 120, 120, 20).build();
+        Button back = Button.builder(Component.translatable("gui.screens.TextureScreen.backButton"), (b) -> onClose()).bounds(TextureScreen.RETURN_LOCATION, 120, 120, 20).build();
         this.addRenderableWidget(back);
     }
 

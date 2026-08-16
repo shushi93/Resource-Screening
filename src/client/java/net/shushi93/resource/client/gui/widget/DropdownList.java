@@ -18,30 +18,16 @@ import java.util.List;
 public class DropdownList extends AbstractWidget {
     private boolean isExpanded = false;
     protected final Font font = Minecraft.getInstance().font;
-    private final List<String> m;
     private int scroll;
     private boolean isEntryHovered;
     private boolean isMainHover;
+    private final List<String> m = List.of("Test", "Test2", "Test3", "Test4", "Test5", "Test6", "Test7", "Test8", "Test9", "Test10");
 
     /**
      * Overloaded Constructor
      */
     public DropdownList(int x, int y, int w, int h) {
-        final List<String> m = List.of("Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6");
-        this(x, y, w, h, m);
-    }
-
-    /**
-     * Creates the dropdown list
-     * @param x x-coordinate of the top-left point of the dropdown list
-     * @param y y-coordinate of the top-left point of the dropdown list
-     * @param w width of the dropdown box
-     * @param h height of the dropdown box
-     * @param items The names of all the entries
-     */
-    public DropdownList(int x, int y, int w, int h, List<String> items) {
-        this.m = items;
-        super(x, y, w, h, Component.literal(items.getFirst()));
+        super(x, y, w, h, Component.literal("Test"));
     }
 
     /**

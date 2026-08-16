@@ -45,7 +45,7 @@ public class TextureScreen extends Screen {
 
         SpriteIconButton spriteIconButton2 = this.addRenderableWidget(
                 filter.filter_btn(
-                        20, _ -> Minecraft.getInstance().setScreen(new TextureFilterScreen(Component.empty(), this)), true
+                        20, b -> Minecraft.getInstance().setScreen(new TextureFilterScreen(Component.empty(), this)), true
                 )
         );
         spriteIconButton2.setPosition(400, 40 - this.font.lineHeight);
@@ -54,7 +54,7 @@ public class TextureScreen extends Screen {
         DropdownList dropdown = new DropdownList(172, 112, 120, 20);
         this.addRenderableWidget(dropdown);
 
-        Button back = Button.builder(Component.translatable("gui.screens.TextureScreen.backButton"), (_) -> onClose()).bounds(TextureScreen.RETURN_LOCATION, 224, 120, 20).build();
+        Button back = Button.builder(Component.translatable("gui.screens.TextureScreen.backButton"), (b) -> onClose()).bounds(TextureScreen.RETURN_LOCATION, 224, 120, 20).build();
         this.addRenderableWidget(back);
     }
 
