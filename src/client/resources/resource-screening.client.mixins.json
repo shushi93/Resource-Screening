@@ -1,0 +1,18 @@
+{
+	"required": true,
+	"package": "net.shushi93.client.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"client": [
+		"ResourceScreenMixin",
+		"TitleScreenMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	},
+	"mixinextras": {
+		"minVersion": "0.5.3"
+	}
+}

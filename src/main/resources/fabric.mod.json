@@ -1,0 +1,38 @@
+{
+	"schemaVersion": 1,
+	"id": "resource-screening",
+	"version": "${version}",
+	"name": "resource-screening",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": [
+		"Me!"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/resource-screening/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.shushi93.ResourceScreening"
+		],
+		"client": [
+			"net.shushi93.client.ResourceScreeningClient"
+		]
+	},
+	"mixins": [
+		"resource-screening.mixins.json",
+		{
+			"config": "resource-screening.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.19.3",
+		"minecraft": "~1.21.10",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}
