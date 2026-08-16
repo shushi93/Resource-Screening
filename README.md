@@ -12,6 +12,26 @@ In vanilla Minecraft, it would not be possible to get just the grass texture fro
 
 This mod aims to solve that problem, by allowing you more control of the textures you want in the game. This allows you to customise your game to a degree that would have otherwise been harder to acheive.
 
+## Current development snapshot
+What is already in place:
+- Custom UI entrypoint: `Options -> Resource Packs` is redirected to `TextureScreen` through `ResourceScreenMixin`.
+- A dev shortcut button was added on the title screen (`TitleScreenMixin`) to open `TextureScreen`.
+- `TextureScreen` currently renders the basic layout (search box, filter icon button, dropdown widget, return button).
+- `DropdownList` has custom drawing, expand/collapse, and scroll behavior.
+
+What is still placeholder/WIP:
+- `TextureFilterScreen` is temporary and currently just shows a test toast.
+- `DropdownList` still uses hardcoded dummy entries (`Item 1`, `Item 2`, ...).
+- `ResourceScreeningClient` and data generator are still template-level stubs.
+- No texture/resource hot-swap logic is implemented yet (current work is mostly UI scaffolding).
+
+## Hints for what to do next
+1. Replace dummy UI data with real pack/resource data from Minecraft's resource pack list.
+2. Add a selection/apply flow that writes chosen states and triggers a client resource reload.
+3. Separate screen rendering from state logic (controller/state class) so undo/cancel is easier.
+4. Convert `TextureFilterScreen` from test UI into real filtering/sorting controls.
+5. Add keyboard/narration support to `DropdownList`, then remove the dev-only title button when stable.
+
 ## 🔻How to download and use 🔻
 <details>
 <summary>Download</summary>
