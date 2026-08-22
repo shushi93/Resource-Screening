@@ -6,12 +6,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.SpriteIconButton;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.packs.PackSelectionScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.repository.PackRepository;
 import net.shushi93.resource.ResourceScreening;
 import net.shushi93.resource.client.gui.components.Pack_Creator;
 import net.shushi93.resource.client.gui.widget.DropdownList;
+import net.shushi93.resource.client.gui.widget.filter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,13 +62,18 @@ public class TextureScreen extends Screen {
 
         EditBox search = new EditBox(this.font, 40, 40 - this.font.lineHeight, 350, 20, Component.empty());
 
-//        SpriteIconButton spriteIconButton2 = this.addRenderableWidget(
-//                filter.filter_btn(
-//                        20, b -> mc.setScreen(new TextureFilterScreen(Component.empty(), this)), true
-//                )
-//        );
-//        spriteIconButton2.setPosition(400, 40 - this.font.lineHeight);
-//        spriteIconButton2.setTooltip(Tooltip.create(Component.translatable("gui.screens.TextureScreen.filterTooltip")));
+        SpriteIconButton spriteIconButton2 = this.addRenderableWidget(
+                filter.filter_btn(
+                        20, b -> mc.setScreen(new PackSelectionScreen(pr, repo -> {
+                            pr.setSelected(repo.getSelectedIds());
+                            mc.options.save();
+                            mc.reloadResourcePacks();
+                            mc.setScreen(this);
+                        }, mc.gameDirectory.toPath().resolve("resourcepacks"), Component.translatable("options.resourcepack"))), true
+                )
+        );
+        spriteIconButton2.setPosition(400, 40 - this.font.lineHeight);
+        spriteIconButton2.setTooltip(Tooltip.create(Component.translatable("gui.screens.TextureScreen.filterTooltip")));
 
         DropdownList dropdown = new DropdownList(172, 112, 120, 20);
 
