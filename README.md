@@ -42,7 +42,7 @@ side of the screen.
 ### Compatibility
 
 - [ ] 1.21.4
-- [x] 1.21.10
+- [x] 1.21.10 (Fabric)
 - [ ] 1.21.11
 - [ ] 26.1+
 
