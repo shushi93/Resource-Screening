@@ -13,8 +13,6 @@ import net.minecraft.client.gui.screens.packs.PackSelectionScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.repository.PackRepository;
 import net.shushi93.resource.ResourceScreening;
-import net.shushi93.resource.client.gui.components.Pack_Creator;
-import net.shushi93.resource.client.gui.widget.DropdownList;
 import net.shushi93.resource.client.gui.widget.filter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,13 +32,11 @@ public class TextureScreen extends Screen {
     private final PackRepository pr = mc.getResourcePackRepository();
     private final List<String> selected_packs = new ArrayList<>(pr.getSelectedIds());
     private final List<String> hacking_noises = new ArrayList<>(pr.getAvailableIds());
+    private boolean changed = false;
 
     public TextureScreen(Component title, Screen parent) {
         super(title);
         this.parent = parent;
-        Pack_Creator.createPack("doogile");
-        Pack_Creator.createPack("riley");
-        mc.reloadResourcePacks();
     }
 
     /**
@@ -57,7 +53,7 @@ public class TextureScreen extends Screen {
      */
     @Override
     protected void init() {
-        LOGGER.info("Available IDs: {}", pr.getAvailableIds());
+        LOGGER.debug("Available IDs: {}", pr.getAvailableIds());
 //        LOGGER.info("Selected IDs: {}", pr.getSelectedIds());
 
         EditBox search = new EditBox(this.font, 40, 40 - this.font.lineHeight, 350, 20, Component.empty());
@@ -75,11 +71,11 @@ public class TextureScreen extends Screen {
         spriteIconButton2.setPosition(400, 40 - this.font.lineHeight);
         spriteIconButton2.setTooltip(Tooltip.create(Component.translatable("gui.screens.TextureScreen.filterTooltip")));
 
-        DropdownList dropdown = new DropdownList(172, 112, 120, 20);
+//        DropdownList dropdown = new DropdownList(172, 112, 120, 20);
 
         Button back = Button.builder(Component.translatable("gui.screens.TextureScreen.backButton"), (b) -> onClose()).bounds(TextureScreen.RETURN_LOCATION, 224, 120, 20).build();
-        Button b1 = Button.builder(Component.literal("B1"), b -> onClick("file/doogile")).bounds(120, 112, 20, 20).build();
-        Button b2 = Button.builder(Component.literal("B2"), b -> onClick("file/riley")).bounds(120, 144, 20, 20).build();
+        Button b1 = Button.builder(Component.literal("B1"), b -> onClick("file/Bare Bones 1.21.11.zip")).bounds(120, 112, 20, 20).build();
+        Button b2 = Button.builder(Component.literal("B2"), b -> onClick("file/Faithful 64x - September 2025 Release.zip")).bounds(120, 144, 20, 20).build();
 
         this.addRenderableWidget(b1);
         this.addRenderableWidget(b2);
@@ -90,6 +86,11 @@ public class TextureScreen extends Screen {
 
     @Override
     public void onClose() {
+        if (changed) {
+            mc.options.save();
+            mc.reloadResourcePacks();
+            changed = false;
+        }
         mc.setScreen(this.parent);
     }
 
@@ -101,9 +102,9 @@ public class TextureScreen extends Screen {
     private void onClick(String name) {
         reset_hacking_noises();
         hacking_noises.add(name);
-        LOGGER.info("hackingnoises: {}", hacking_noises);
+        LOGGER.debug("hackingnoises: {}", hacking_noises);
 //        LOGGER.info("available: {}", pr.getAvailableIds());
         pr.setSelected(hacking_noises);
-        mc.reloadResourcePacks();
+        changed = true;
     }
 }
