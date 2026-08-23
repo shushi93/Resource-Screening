@@ -31,11 +31,11 @@ side of the screen.
 <!-- fix the gui description -->
 
 ## Features
-
-- [ ] Individually customise textures
+- [x] Swap between two packs (bare bones & faithful x64)
 
 ### WIP Features
 
+- [ ] Individually customise textures 
 - [ ] Edit textures
 - [ ] Support for custom models
 
