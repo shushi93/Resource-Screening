@@ -1,4 +1,4 @@
-package net.shushi93.resource.client.gui.widget;
+package net.shushi93.resource.client.gui.widgets;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -16,12 +16,12 @@ import java.util.List;
  * Creates the dropdown list widget and handles functionality
  */
 public class DropdownList extends AbstractWidget {
-    private boolean isExpanded = false;
     protected final Font font = Minecraft.getInstance().font;
+    private final List<String> m = List.of("Test", "Test2", "Test3", "Test4", "Test5", "Test6", "Test7", "Test8", "Test9", "Test10");
+    private boolean isExpanded = false;
     private int scroll;
     private boolean isEntryHovered;
     private boolean isMainHover;
-    private final List<String> m = List.of("Test", "Test2", "Test3", "Test4", "Test5", "Test6", "Test7", "Test8", "Test9", "Test10");
 
     /**
      * Overloaded Constructor
@@ -55,9 +55,10 @@ public class DropdownList extends AbstractWidget {
 
         if (isHovered) outline_color = 0xFFFFFFFF; //change from grey to white
         graphics.fill(getX() - 1, getY() - 1, getX() + this.width + 1, getY() + this.height + 1, outline_color); //outline
-        graphics.fill(getX(), getY(),getX() + this.width, getY() + this.height, /*color*/ black); //black box
+        graphics.fill(getX(), getY(), getX() + this.width, getY() + this.height, /*color*/ black); //black box
 
-        if(isHovered) graphics.fill(getX() - 1, getY() - 1, getX() + this.width + 1, getY() + this.height + 1, highlight_color);//highlight on hover
+        if (isHovered)
+            graphics.fill(getX() - 1, getY() - 1, getX() + this.width + 1, getY() + this.height + 1, highlight_color);//highlight on hover
         graphics.drawCenteredString(this.font, this.isExpanded ? "▲" : "▼", getXwithOffset(90), getCenteredY(-3), /*color*/ white); //dropdown arrow
         graphics.drawString(this.font, shortenEntryString(this.m.getFirst()), getXwithOffset(10), getCenteredY(-4), white); //Entry name
 
@@ -71,7 +72,8 @@ public class DropdownList extends AbstractWidget {
                 graphics.drawString(this.font, shortenEntryString(this.m.get(c)), getXwithOffset(10), (getCenteredY(-4) + this.height * c + 1) - this.scroll, white); //Entry name
 
                 this.isEntryHovered = areCoordinatesInRectangle(i, j, getX(), getY() + this.height * c + 1 - this.scroll, this.width, this.height);
-                if (this.isEntryHovered) graphics.fill(getX(), getY() + this.height * c + 1 - this.scroll, getX() + this.width, getY() + this.height * (c + 1) - this.scroll, highlight_color); //highlight
+                if (this.isEntryHovered)
+                    graphics.fill(getX(), getY() + this.height * c + 1 - this.scroll, getX() + this.width, getY() + this.height * (c + 1) - this.scroll, highlight_color); //highlight
             }
 
             graphics.disableScissor();
@@ -83,15 +85,17 @@ public class DropdownList extends AbstractWidget {
 
     /**
      * Allows an easy & resuable way to position an item inside the widget
+     *
      * @param percent How far right the item's x-coordinate should be
      * @return x-coordinate
      */
-    public int getXwithOffset(int percent){
+    public int getXwithOffset(int percent) {
         return getX() + this.width * percent / 100;
     }
 
     /**
      * Allows an easy & reusable way to center items inside the widget
+     *
      * @param translate How far up or down the item should me offset by
      * @return y-coordinate
      */
@@ -101,28 +105,29 @@ public class DropdownList extends AbstractWidget {
 
     /**
      * Shortens the name of the text that should be rendered inside the widget so it is no longer than 12 characters
+     *
      * @param message The string that should (or not) be shortened
      * @return The message, shortened with elpisis if needed
      */
     public String shortenEntryString(@NotNull String message) {
         if (message.length() > 12) {
             StringBuilder y = new StringBuilder();
-            for (int c = 0; c < 12; c++){
+            for (int c = 0; c < 12; c++) {
                 y.append(message.charAt(c));
             }
             y.append("...");
             return y.toString();
-        }
-        else{
+        } else {
             return message;
         }
     }
 
     /**
      * Checks whether coordinates are in a Rectangle, based on areCoordinatesInRectangle from AbstractWidget
+     *
      * @param d x-coordinate
      * @param e y-coordinate
-     * x, y, w, h are the same as those in
+     *          x, y, w, h are the same as those in
      * @return Returns a boolean that is true if the coordinates are inside the rectangle, false if not
      */
     private boolean areCoordinatesInRectangle(double d, double e, int x, int y, int w, int h) {
@@ -132,7 +137,7 @@ public class DropdownList extends AbstractWidget {
     @Override
     public boolean mouseScrolled(double d, double e, double f, double g) {
         if (!this.isHovered) return false;
-        else{
+        else {
             this.scroll += g * 3;
             return true;
         }

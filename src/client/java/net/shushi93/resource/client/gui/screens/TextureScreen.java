@@ -13,7 +13,7 @@ import net.minecraft.client.gui.screens.packs.PackSelectionScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.repository.PackRepository;
 import net.shushi93.resource.ResourceScreening;
-import net.shushi93.resource.client.gui.widget.filter;
+import net.shushi93.resource.client.gui.widgets.filter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,9 +53,6 @@ public class TextureScreen extends Screen {
      */
     @Override
     protected void init() {
-        LOGGER.debug("Available IDs: {}", pr.getAvailableIds());
-//        LOGGER.info("Selected IDs: {}", pr.getSelectedIds());
-
         EditBox search = new EditBox(this.font, 40, 40 - this.font.lineHeight, 350, 20, Component.empty());
 
         SpriteIconButton spriteIconButton2 = this.addRenderableWidget(
@@ -71,8 +68,6 @@ public class TextureScreen extends Screen {
         spriteIconButton2.setPosition(400, 40 - this.font.lineHeight);
         spriteIconButton2.setTooltip(Tooltip.create(Component.translatable("gui.screens.TextureScreen.filterTooltip")));
 
-//        DropdownList dropdown = new DropdownList(172, 112, 120, 20);
-
         Button back = Button.builder(Component.translatable("gui.screens.TextureScreen.backButton"), (b) -> onClose()).bounds(TextureScreen.RETURN_LOCATION, 224, 120, 20).build();
         Button b1 = Button.builder(Component.literal("B1"), b -> onClick("file/Bare Bones 1.21.11.zip")).bounds(120, 112, 20, 20).build();
         Button b2 = Button.builder(Component.literal("B2"), b -> onClick("file/Faithful 64x - September 2025 Release.zip")).bounds(120, 144, 20, 20).build();
@@ -81,7 +76,6 @@ public class TextureScreen extends Screen {
         this.addRenderableWidget(b2);
         this.addRenderableWidget(search);
         this.addRenderableWidget(back);
-        //this.addRenderableWidget(dropdown);
     }
 
     @Override
@@ -103,7 +97,6 @@ public class TextureScreen extends Screen {
         reset_hacking_noises();
         hacking_noises.add(name);
         LOGGER.debug("hackingnoises: {}", hacking_noises);
-//        LOGGER.info("available: {}", pr.getAvailableIds());
         pr.setSelected(hacking_noises);
         changed = true;
     }

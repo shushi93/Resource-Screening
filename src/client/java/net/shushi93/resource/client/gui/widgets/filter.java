@@ -1,4 +1,4 @@
-package net.shushi93.resource.client.gui.widget;
+package net.shushi93.resource.client.gui.widgets;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
