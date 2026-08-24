@@ -5,13 +5,15 @@ import net.minecraft.client.Minecraft;
 import net.shushi93.resource.client.util.Pack_Creator;
 
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class ResourceScreeningClient implements ClientModInitializer {
+    public static final Path pack_directory = Minecraft.getInstance().gameDirectory.toPath().resolve("resourcepacks");
 
     @Override
     public void onInitializeClient() {
         // This entrypoint is suitable for setting up client-specific logic, such as rendering.
-        if (Files.exists(Minecraft.getInstance().gameDirectory.toPath().resolve("resourcepacks").resolve("doogile.zip")))
+        if (!Files.exists(pack_directory.resolve("doogile.zip")))
             Pack_Creator.createPack("doogile");
     }
 }

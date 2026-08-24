@@ -1,7 +1,7 @@
 package net.shushi93.resource.client.util;
 
-import net.minecraft.client.Minecraft;
 import net.shushi93.resource.ResourceScreening;
+import net.shushi93.resource.client.ResourceScreeningClient;
 import org.slf4j.LoggerFactory;
 
 import java.io.FileOutputStream;
@@ -12,7 +12,7 @@ import java.util.zip.ZipOutputStream;
 public class Pack_Creator {
 
     public static void createPack(String pack_name) {
-        Path pack = Minecraft.getInstance().gameDirectory.toPath().resolve("resourcepacks").resolve(pack_name + ".zip");
+        Path pack = ResourceScreeningClient.pack_directory.resolve(pack_name + ".zip");
 
         try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(pack.toFile()))) {
             zos.putNextEntry(new ZipEntry("pack.mcmeta"));
@@ -25,6 +25,9 @@ public class Pack_Creator {
                       }
                     }
                     """.getBytes());
+            zos.closeEntry();
+
+            zos.putNextEntry(new ZipEntry("assets/minecraft/"));
             zos.closeEntry();
         } catch (Exception e) {
             LoggerFactory.getLogger(ResourceScreening.MOD_ID).error("Failed to create pack: {}", e.getMessage());
