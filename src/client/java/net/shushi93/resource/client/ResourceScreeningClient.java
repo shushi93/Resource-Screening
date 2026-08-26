@@ -2,7 +2,7 @@ package net.shushi93.resource.client;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.Minecraft;
-import net.shushi93.resource.client.util.Pack_Creator;
+import net.shushi93.resource.client.util.Zip_Helper;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,6 +14,6 @@ public class ResourceScreeningClient implements ClientModInitializer {
     public void onInitializeClient() {
         // This entrypoint is suitable for setting up client-specific logic, such as rendering.
         if (!Files.exists(pack_directory.resolve("doogile.zip")))
-            Pack_Creator.createPack("doogile");
+            Zip_Helper.createPack("doogile");
     }
 }

@@ -14,6 +14,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.repository.PackRepository;
 import net.shushi93.resource.ResourceScreening;
 import net.shushi93.resource.client.gui.widgets.filter;
+import net.shushi93.resource.client.util.Zip_Helper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +38,9 @@ public class TextureScreen extends Screen {
     public TextureScreen(Component title, Screen parent) {
         super(title);
         this.parent = parent;
+        LOGGER.debug(pr.getAvailableIds().toString());
+        Zip_Helper.get_textures("Better-Leaves-9.5");
+        Zip_Helper.createPack("doogile");
     }
 
     /**
@@ -96,7 +100,6 @@ public class TextureScreen extends Screen {
     private void onClick(String name) {
         reset_hacking_noises();
         hacking_noises.add(name);
-        LOGGER.debug("hackingnoises: {}", hacking_noises);
         pr.setSelected(hacking_noises);
         changed = true;
     }
