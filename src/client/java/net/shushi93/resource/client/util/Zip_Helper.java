@@ -37,6 +37,10 @@ public class Zip_Helper {
     }
 
     public static void get_textures(String pack_name) {
+        get_textures(pack_name, false);
+    }
+
+    public static void get_textures(String pack_name, boolean b) {
         Logger logger = LoggerFactory.getLogger(ResourceScreening.MOD_ID);
         pack_name = cleanse(pack_name);
         Path pack = ResourceScreeningClient.pack_directory.resolve(pack_name);
@@ -48,6 +52,7 @@ public class Zip_Helper {
         }
         try (FileSystem fs = FileSystems.newFileSystem(pack, Map.of())) {
             Path assets = fs.getPath("assets").resolve("minecraft");
+            if (b) assets = assets.resolve("textures");
             List<String> arr = Files.walk(assets)
                     .filter(Files::isRegularFile)
                     .map(assets::relativize)
@@ -56,7 +61,6 @@ public class Zip_Helper {
             logger.debug("Successfully got textures from pack: {}", arr);
         } catch (Exception e) {
             logger.error("Failed to read textures from pack: {}", e.getMessage());
-            // pls work
         }
     }
 

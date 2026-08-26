@@ -40,7 +40,6 @@ public class TextureScreen extends Screen {
         this.parent = parent;
         LOGGER.debug(pr.getAvailableIds().toString());
         Zip_Helper.get_textures("Better-Leaves-9.5");
-        Zip_Helper.createPack("doogile");
     }
 
     /**
