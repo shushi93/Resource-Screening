@@ -12,9 +12,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Zip_Helper {
     private static final Logger LOGGER = LoggerFactory.getLogger(Zip_Helper.class);
@@ -39,8 +39,8 @@ public class Zip_Helper {
         }
     }
 
-    public static void get_textures(String pack_name) {
-        get_textures(pack_name, false);
+    public static @Nullable Collection<String> get_textures(String pack_name) {
+        return get_textures(pack_name, false);
     }
 
     public static @Nullable Collection<String> get_textures(String pack_name, boolean b) {
@@ -51,27 +51,31 @@ public class Zip_Helper {
         }
         try (FileSystem fs = FileSystems.newFileSystem(pack, Map.of())) {
             Path assets = fs.getPath("assets").resolve("minecraft");
-            if (b) assets = assets.resolve("textures");
-            List<String> arr = Files.walk(assets)
-                    .filter(Files::isRegularFile)
-                    .map(assets::relativize)
-                    .map(Path::toString)
-                    .collect(Collectors.toCollection(ArrayList::new));
-            LOGGER.debug("Successfully got textures from pack: {}", arr);
-            return arr;
+            if (!b) assets = assets.resolve("textures");
+
+            try (Stream<Path> pathStream = Files.walk(assets)) {
+                return pathStream.filter(Files::isRegularFile)
+                        .map(assets::relativize)
+                        .map(Path::toString)
+                        .collect(Collectors.toCollection(ArrayList::new));
+            } catch (Exception e) {
+                LOGGER.error(e.getMessage());
+            }
         } catch (Exception e) {
             LOGGER.error("Failed to read textures from pack: {}", e.getMessage());
         }
         return null;
     }
 
-    public static Collection<String> get_all_pack_names() {
-        try {
-            return Files.list(ResourceScreeningClient.pack_directory).map(Path::getFileName).map(Path::toString).collect(Collectors.toCollection(ArrayList::new));
+    public static @Nullable Collection<String> get_all_pack_names() {
+        try (Stream<Path> pathStream = Files.list(ResourceScreeningClient.pack_directory)) {
+            return pathStream.map(Path::getFileName)
+                    .map(Path::toString)
+                    .collect(Collectors.toCollection(ArrayList::new));
         } catch (Exception e) {
             LOGGER.error("Failed to read pack names: {}", e.getMessage());
-            return null;
         }
+        return null;
     }
 
     private static String cleanse(String pack_name) {
