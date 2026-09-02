@@ -6,18 +6,16 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Zip_Helper {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Zip_Helper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResourceScreening.MOD_ID);
 
     public static void createPack(String pack_name) {
         Path pack = ResourceScreeningClient.pack_directory.resolve(cleanse(pack_name));
@@ -76,6 +74,48 @@ public class Zip_Helper {
             LOGGER.error("Failed to read pack names: {}", e.getMessage());
         }
         return null;
+    }
+
+    public static void add_to_pack(Path path) {
+        add_to_pack("doogile", path);
+    }
+
+    public static void add_to_pack(String name, Path path) {
+        try (FileSystem fs = FileSystems.newFileSystem(
+                ResourceScreeningClient.pack_directory.resolve(cleanse("doogile")), Map.of()
+        );
+             FileSystem zs = FileSystems.newFileSystem(
+                     ResourceScreeningClient.pack_directory.resolve(cleanse("Better-Leaves-9.5")), Map.of()
+             )
+        ) {
+
+            if (!Files.exists(fs.getPath("assets").resolve("minecraft").resolve("textures")
+                    .resolve(path.toString()).getParent())) {
+                Files.createDirectories(fs.getPath("assets").resolve("minecraft").resolve("textures")
+                        .resolve(path.toString()).getParent());
+            }
+
+            LOGGER.debug(fs.getPath("assets").resolve("minecraft").resolve("textures")
+                    .resolve(path.toString()).getParent().toString());
+
+            LOGGER.debug(Files.exists(fs.getPath("assets", "minecraft", "textures", path.toString()).getParent()) ? "Exists" : "Exists not");
+
+            Files.copy(zs.getPath("assets", "minecraft", "textures", "block")
+                            .resolve("dark_oak_leaves.png"),
+                    fs.getPath("assets", "minecraft", "textures")
+                            .resolve(path.toString()),
+                    StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception e) {
+            LOGGER.error(Arrays.toString(e.getStackTrace()));
+        }
+    }
+
+    public static void remove_from_pack(String name, Path path) {
+        try (FileSystem fs = FileSystems.newFileSystem(ResourceScreeningClient.pack_directory.resolve(cleanse(name)), Map.of())) {
+            Files.deleteIfExists(fs.getPath("assets").resolve("minecraft").resolve("textures").resolve(path.toString()));
+        } catch (Exception e) {
+            LOGGER.error(Arrays.toString(e.getStackTrace()));
+        }
     }
 
     private static String cleanse(String pack_name) {
