@@ -13,7 +13,11 @@ public class ResourceScreeningClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         // This entrypoint is suitable for setting up client-specific logic, such as rendering.
-        if (!Files.exists(pack_directory.resolve("doogile.zip")))
+        var repo = Minecraft.getInstance().getResourcePackRepository();
+        if (!Files.exists(pack_directory.resolve("doogile.zip"))) {
             Zip_Helper.createPack("doogile");
+            repo.getSelectedIds().add("doogile");
+            repo.setSelected(repo.getSelectedIds());
+        }
     }
 }
