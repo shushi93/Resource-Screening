@@ -76,34 +76,27 @@ public class Zip_Helper {
         return null;
     }
 
-    public static void add_to_pack(Path path) {
-        add_to_pack("doogile", path);
-    }
+    public static void add_to_pack(String src_pack, String src_path) {
+        src_pack = cleanse(src_pack);
 
-    public static void add_to_pack(String name, Path path) {
-        try (FileSystem fs = FileSystems.newFileSystem(
+        try (FileSystem ds = FileSystems.newFileSystem(
                 ResourceScreeningClient.pack_directory.resolve(cleanse("doogile")), Map.of()
         );
-             FileSystem zs = FileSystems.newFileSystem(
-                     ResourceScreeningClient.pack_directory.resolve(cleanse("Better-Leaves-9.5")), Map.of()
+             FileSystem fs = FileSystems.newFileSystem(
+                     ResourceScreeningClient.pack_directory.resolve(src_pack), Map.of()
              )
         ) {
-
-            if (!Files.exists(fs.getPath("assets").resolve("minecraft").resolve("textures")
-                    .resolve(path.toString()).getParent())) {
-                Files.createDirectories(fs.getPath("assets").resolve("minecraft").resolve("textures")
-                        .resolve(path.toString()).getParent());
+            
+            if (!Files.exists(ds.getPath("assets", "minecraft", "textures")
+                    .resolve(src_path).getParent())) {
+                Files.createDirectories(ds.getPath("assets", "minecraft", "textures")
+                        .resolve(src_path).getParent());
             }
 
-            LOGGER.debug(fs.getPath("assets").resolve("minecraft").resolve("textures")
-                    .resolve(path.toString()).getParent().toString());
-
-            LOGGER.debug(Files.exists(fs.getPath("assets", "minecraft", "textures", path.toString()).getParent()) ? "Exists" : "Exists not");
-
-            Files.copy(zs.getPath("assets", "minecraft", "textures", "block")
-                            .resolve("dark_oak_leaves.png"),
-                    fs.getPath("assets", "minecraft", "textures")
-                            .resolve(path.toString()),
+            Files.copy(fs.getPath("assets", "minecraft", "textures")
+                            .resolve(src_path),
+                    ds.getPath("assets", "minecraft", "textures")
+                            .resolve(src_path),
                     StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
             LOGGER.error(Arrays.toString(e.getStackTrace()));
