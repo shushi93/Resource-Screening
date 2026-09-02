@@ -86,7 +86,7 @@ public class Zip_Helper {
                      ResourceScreeningClient.pack_directory.resolve(src_pack), Map.of()
              )
         ) {
-            
+
             if (!Files.exists(ds.getPath("assets", "minecraft", "textures")
                     .resolve(src_path).getParent())) {
                 Files.createDirectories(ds.getPath("assets", "minecraft", "textures")
@@ -103,9 +103,11 @@ public class Zip_Helper {
         }
     }
 
-    public static void remove_from_pack(String name, Path path) {
-        try (FileSystem fs = FileSystems.newFileSystem(ResourceScreeningClient.pack_directory.resolve(cleanse(name)), Map.of())) {
-            Files.deleteIfExists(fs.getPath("assets").resolve("minecraft").resolve("textures").resolve(path.toString()));
+    public static void remove_from_pack(String src_path) {
+        try (FileSystem fs = FileSystems.newFileSystem(ResourceScreeningClient.pack_directory.resolve(cleanse("doogile")), Map.of())
+        ) {
+            Files.deleteIfExists(fs.getPath("assets", "minecraft", "textures")
+                    .resolve(src_path));
         } catch (Exception e) {
             LOGGER.error(Arrays.toString(e.getStackTrace()));
         }
