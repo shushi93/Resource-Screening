@@ -18,9 +18,6 @@ import net.shushi93.resource.client.util.Zip_Helper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * The main mod screen
  */
@@ -31,15 +28,11 @@ public class TextureScreen extends Screen {
     public final Screen parent;
     private final Minecraft mc = Minecraft.getInstance();
     private final PackRepository pr = mc.getResourcePackRepository();
-    private final List<String> selected_packs = new ArrayList<>(pr.getSelectedIds());
-    private final List<String> hacking_noises = new ArrayList<>(pr.getAvailableIds());
     private boolean changed = false;
 
     public TextureScreen(Component title, Screen parent) {
         super(title);
         this.parent = parent;
-        LOGGER.debug(pr.getAvailableIds().toString());
-        Zip_Helper.get_textures("Better-Leaves-9.5");
     }
 
     /**
@@ -72,11 +65,14 @@ public class TextureScreen extends Screen {
         spriteIconButton2.setTooltip(Tooltip.create(Component.translatable("gui.screens.TextureScreen.filterTooltip")));
 
         Button back = Button.builder(Component.translatable("gui.screens.TextureScreen.backButton"), (b) -> onClose()).bounds(TextureScreen.RETURN_LOCATION, 224, 120, 20).build();
-        Button b1 = Button.builder(Component.literal("B1"), b -> onClick("file/Bare Bones 1.21.11.zip")).bounds(120, 112, 20, 20).build();
-        Button b2 = Button.builder(Component.literal("B2"), b -> onClick("file/Faithful 64x - September 2025 Release.zip")).bounds(120, 144, 20, 20).build();
 
-        this.addRenderableWidget(b1);
-        this.addRenderableWidget(b2);
+        int i = 0;
+        for (String texture : Zip_Helper.get_textures("Better-Leaves-9.5")) {
+            Button b = Button.builder(Component.literal(String.format("B%d", i)), b1_ -> onClick("Better-Leaves-9.5", texture)).bounds(20 * i % 200, 120 + 20 * (i / 10) + 20, 20, 20).build();
+            this.addRenderableWidget(b);
+            i++;
+        }
+        //h: 250, w: 400
         this.addRenderableWidget(search);
         this.addRenderableWidget(back);
     }
@@ -84,6 +80,7 @@ public class TextureScreen extends Screen {
     @Override
     public void onClose() {
         if (changed) {
+            Zip_Helper.addIfNotSelected();
             mc.options.save();
             mc.reloadResourcePacks();
             changed = false;
@@ -91,15 +88,16 @@ public class TextureScreen extends Screen {
         mc.setScreen(this.parent);
     }
 
-    private void reset_hacking_noises() {
-        hacking_noises.clear();
-        hacking_noises.addAll(selected_packs);
-    }
+    private void onClick(String src_pack, String src_texture) {
+        Zip_Helper.removeIfSelected();
+        if (Zip_Helper.does_texture_exist(src_texture)) {
+            Zip_Helper.remove_from_pack(src_texture);
+        } else {
+            Zip_Helper.add_to_pack(src_pack, src_texture);
+        }
 
-    private void onClick(String name) {
-        reset_hacking_noises();
-        hacking_noises.add(name);
-        pr.setSelected(hacking_noises);
+        LOGGER.debug(Boolean.toString(Zip_Helper.does_texture_exist(src_texture)));
+
         changed = true;
     }
 }

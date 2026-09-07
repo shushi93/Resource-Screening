@@ -1,5 +1,6 @@
 package net.shushi93.resource.client.util;
 
+import net.minecraft.client.Minecraft;
 import net.shushi93.resource.ResourceScreening;
 import net.shushi93.resource.client.ResourceScreeningClient;
 import org.jetbrains.annotations.Nullable;
@@ -78,6 +79,7 @@ public class Zip_Helper {
 
     public static void add_to_pack(String src_pack, String src_path) {
         src_pack = cleanse(src_pack);
+        removeIfSelected();
 
         try (FileSystem ds = FileSystems.newFileSystem(
                 ResourceScreeningClient.pack_directory.resolve(cleanse("doogile")), Map.of()
@@ -110,6 +112,38 @@ public class Zip_Helper {
                     .resolve(src_path));
         } catch (Exception e) {
             LOGGER.error(Arrays.toString(e.getStackTrace()));
+        }
+    }
+
+    public static boolean does_texture_exist(String texture_location) {
+        try (FileSystem fs = FileSystems.newFileSystem(ResourceScreeningClient.pack_directory.resolve(cleanse("doogile")), Map.of())) {
+            return Files.exists(fs.getPath("assets", "minecraft", "textures").resolve(texture_location));
+        } catch (Exception e) {
+            LOGGER.error(Arrays.toString(e.getStackTrace()));
+        }
+        return false;
+    }
+
+    public static void removeIfSelected() {
+        if (Minecraft.getInstance().getResourcePackRepository().getSelectedIds().contains("file/doogile.zip")) {
+            Minecraft.getInstance().getResourcePackRepository().setSelected(
+                    Minecraft.getInstance().getResourcePackRepository().getSelectedIds()
+                            .stream()
+                            .filter(id -> !id.equals("file/doogile.zip"))
+                            .collect(Collectors.toList())
+            );
+            Minecraft.getInstance().reloadResourcePacks();
+        }
+    }
+
+    public static void addIfNotSelected() {
+        if (!Minecraft.getInstance().getResourcePackRepository().getSelectedIds().contains("file/doogile.zip")) {
+            Minecraft.getInstance().getResourcePackRepository().setSelected(
+                    Stream.concat(
+                            Minecraft.getInstance().getResourcePackRepository().getSelectedIds().stream(),
+                            Stream.of("file/doogile.zip")
+                    ).collect(Collectors.toList())
+            );
         }
     }
 
