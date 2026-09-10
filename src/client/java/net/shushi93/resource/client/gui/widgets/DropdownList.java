@@ -4,155 +4,116 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.resources.ResourceLocation;
+import net.shushi93.resource.ResourceScreening;
+import net.shushi93.resource.client.util.Zip_Helper;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Creates the dropdown list widget and handles functionality
  */
 public class DropdownList extends AbstractWidget {
-    protected final Font font = Minecraft.getInstance().font;
-    private final List<String> m = List.of("Test", "Test2", "Test3", "Test4", "Test5", "Test6", "Test7", "Test8", "Test9", "Test10");
+    private static final WidgetSprites HEADER_BOX = new WidgetSprites(
+            ResourceLocation.withDefaultNamespace("widget/text_field"),
+            ResourceLocation.withDefaultNamespace("widget/text_field_highlighted")
+    );
+    private static final WidgetSprites DROPDOWN_BOX = new WidgetSprites(
+            ResourceLocation.fromNamespaceAndPath(ResourceScreening.MOD_ID, "dropdown/dropdown"),
+            ResourceLocation.fromNamespaceAndPath(ResourceScreening.MOD_ID, "dropdown/dropdown_highlighted")
+    );
+    private final Font font = Minecraft.getInstance().font;
+    private final ArrayList<String> options = new ArrayList<>(Objects.requireNonNull(Zip_Helper.get_all_pack_names()));
+    private int scroll_amount = 0;
+    private int selectedOption = 0;
     private boolean isExpanded = false;
-    private int scroll;
-    private boolean isEntryHovered;
-    private boolean isMainHover;
 
-    /**
-     * Overloaded Constructor
-     */
     public DropdownList(int x, int y, int w, int h) {
         super(x, y, w, h, Component.literal("Test"));
     }
 
-    /**
-     * @param d mouseX
-     * @param e mouseY
-     * @return Whether the mouse is on top of the widget
-     */
     @Override
-    public boolean isMouseOver(double d, double e) {
-        return this.isHovered;
-    }
+    protected void renderWidget(GuiGraphics guiGraphics, int i, int j, float f) {
+        guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED,
+                HEADER_BOX.get(this.isActive(), this.isHovered()),
+                this.getX(), this.getY(), this.width, this.height, 0xFFFFFFFF);
 
-    /**
-     * Renders the main widget
-     */
-    @Override
-    protected void renderWidget(GuiGraphics graphics, int i, int j, float f) {
-        this.isHovered = areCoordinatesInRectangle(i, j, getX(), getY(), getWidth(), getHeight() * 3 + 1);
-        this.isMainHover = areCoordinatesInRectangle(i, j, getX(), getY(), getWidth(), getHeight());
+        guiGraphics.drawCenteredString(this.font, this.isExpanded ? "▲" : "▼", getXwithOffset(90), getCenteredY(-3), /*color*/ 0xFFFFFFFF); //dropdown arrow
+        AbstractWidget.renderScrollingString(
+                guiGraphics, this.font, Component.literal(options.get(selectedOption)),
+                getXwithOffset(5), getY(), getXwithOffset(85),
+                getY() + this.height, 0xFFFFFFFF
+        );
 
-        int outline_color = 0xFF8B837E;
-        int highlight_color = 0x19FFFFFF;
-        int white = 0xFFFFFFFF;
-        int black = 0xFF000000;
+        if (isExpanded) {
+            guiGraphics.enableScissor(getX() - 1, getY() + this.height + 1, getX() + this.width + 1, getY() + this.height * 3 + 1);
+            guiGraphics.fill(getX() - 1, getY() + this.height, getX() + this.width + 1, getY() + this.height * 3 + 1, 0x2BFFFFFF); //translucent outline box
 
-        if (isHovered) outline_color = 0xFFFFFFFF; //change from grey to white
-        graphics.fill(getX() - 1, getY() - 1, getX() + this.width + 1, getY() + this.height + 1, outline_color); //outline
-        graphics.fill(getX(), getY(), getX() + this.width, getY() + this.height, /*color*/ black); //black box
+            for (int k = 0; k < options.size(); k++) {
+                int drop_y = getY() + this.height * (k + 1) - this.scroll_amount;
+                if (areCoordinatesInRectangle(i, j, getX(), drop_y, this.width, this.height)) {
+                    guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED,
+                            DROPDOWN_BOX.get(this.isActive(), true),
+                            getX(), drop_y, this.width, this.height, 0xFFFFFFFF);
+                } else {
+                    guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED,
+                            DROPDOWN_BOX.get(this.isActive(), false),
+                            getX(), drop_y, this.width, this.height, 0xFFFFFFFF);
+                }
 
-        if (isHovered)
-            graphics.fill(getX() - 1, getY() - 1, getX() + this.width + 1, getY() + this.height + 1, highlight_color);//highlight on hover
-        graphics.drawCenteredString(this.font, this.isExpanded ? "▲" : "▼", getXwithOffset(90), getCenteredY(-3), /*color*/ white); //dropdown arrow
-        graphics.drawString(this.font, shortenEntryString(this.m.getFirst()), getXwithOffset(10), getCenteredY(-4), white); //Entry name
-
-        if (this.isExpanded) {
-            graphics.enableScissor(getX() - 1, getY() + this.height + 1, getX() + this.width + 1, getY() + this.height * 3 + 1);
-
-            graphics.fill(getX() - 1, getY() + this.height, getX() + this.width + 1, getY() + this.height * 3 + 1, 0x2BFFFFFF); //translucent outline
-
-            for (int c = 1; c < this.m.size(); c++) {
-                graphics.fill(getX(), getY() + this.height * c + 1 - this.scroll, getX() + this.width, (getY() + this.height * (c + 1)) - this.scroll, black); //black box
-                graphics.drawString(this.font, shortenEntryString(this.m.get(c)), getXwithOffset(10), (getCenteredY(-4) + this.height * c + 1) - this.scroll, white); //Entry name
-
-                this.isEntryHovered = areCoordinatesInRectangle(i, j, getX(), getY() + this.height * c + 1 - this.scroll, this.width, this.height);
-                if (this.isEntryHovered)
-                    graphics.fill(getX(), getY() + this.height * c + 1 - this.scroll, getX() + this.width, getY() + this.height * (c + 1) - this.scroll, highlight_color); //highlight
+                AbstractWidget.renderScrollingString(
+                        guiGraphics, this.font, Component.literal(options.get(k)),
+                        getXwithOffset(5), drop_y, getXwithOffset(95),
+                        getY() + this.height * (k + 2) - this.scroll_amount, 0xFFFFFFFF
+                );
             }
-
-            graphics.disableScissor();
+            guiGraphics.disableScissor();
         }
-
-        this.setTooltip(Tooltip.create(Component.translatable("gui.widget.DropdownList.tooltip")));
     }
 
+    @Override
+    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
+    }
 
-    /**
-     * Allows an easy & resuable way to position an item inside the widget
-     *
-     * @param percent How far right the item's x-coordinate should be
-     * @return x-coordinate
-     */
     public int getXwithOffset(int percent) {
         return getX() + this.width * percent / 100;
     }
 
-    /**
-     * Allows an easy & reusable way to center items inside the widget
-     *
-     * @param translate How far up or down the item should me offset by
-     * @return y-coordinate
-     */
     public int getCenteredY(int translate) {
         return getY() + this.height / 2 + translate;
     }
 
-    /**
-     * Shortens the name of the text that should be rendered inside the widget so it is no longer than 12 characters
-     *
-     * @param message The string that should (or not) be shortened
-     * @return The message, shortened with elpisis if needed
-     */
-    public String shortenEntryString(@NotNull String message) {
-        if (message.length() > 12) {
-            StringBuilder y = new StringBuilder();
-            for (int c = 0; c < 12; c++) {
-                y.append(message.charAt(c));
+    @Override
+    public boolean mouseClicked(MouseButtonEvent mouseButtonEvent, boolean bl) {
+        if (mouseButtonEvent.button() == 0) { // Left mouse button
+            if (isExpanded && !super.isMouseOver(mouseButtonEvent.x(), mouseButtonEvent.y())) {
+                selectedOption = (int) ((mouseButtonEvent.y() - (getY() + this.height) + scroll_amount) / this.height);
             }
-            y.append("...");
-            return y.toString();
-        } else {
-            return message;
+            this.isExpanded = !this.isExpanded;
+            return true;
         }
+        return super.mouseClicked(mouseButtonEvent, bl);
     }
 
-    /**
-     * Checks whether coordinates are in a Rectangle, based on areCoordinatesInRectangle from AbstractWidget
-     *
-     * @param d x-coordinate
-     * @param e y-coordinate
-     *          x, y, w, h are the same as those in
-     * @return Returns a boolean that is true if the coordinates are inside the rectangle, false if not
-     */
-    private boolean areCoordinatesInRectangle(double d, double e, int x, int y, int w, int h) {
+    public boolean areCoordinatesInRectangle(double d, double e, int x, int y, int w, int h) {
         return d >= x && e >= y && d < x + w && e < y + h;
     }
 
     @Override
+    public boolean isMouseOver(double d, double e) {
+        return super.isMouseOver(d, e) || (isExpanded && areCoordinatesInRectangle(d, e, getX(), getY() + this.height, this.width, this.height * 2));
+    }
+
+    @Override
     public boolean mouseScrolled(double d, double e, double f, double g) {
-        if (!this.isHovered) return false;
-        else {
-            this.scroll += g * 3;
-            return true;
-        }
-    }
-
-    /**
-     * Opens the dropdown on click release
-     */
-    @Override
-    public void onRelease(MouseButtonEvent mouseButtonEvent) {
-        if (this.isHovered) this.isExpanded = !this.isExpanded;
-    }
-
-    //TODO add widget narration
-    @Override
-    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
+        this.scroll_amount += (int) (-g * 3);
+        this.scroll_amount = Math.clamp(this.scroll_amount, 0, this.height * (options.size() - 2));
+        return super.mouseScrolled(d, e, f, g);
     }
 }
