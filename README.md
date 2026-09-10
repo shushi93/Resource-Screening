@@ -16,7 +16,7 @@ needing to manually edit the textures in each texture pack, you can now do it in
 <details>
 <summary>Download</summary>
 
-You can download the jar file from the [Modrinth](https://modrinth.com/project/resource-screening) (recommended).
+~~You can download the jar file from the [Modrinth](https://modrinth.com/project/resource-screening) (recommended).~~ [Since Modrinth is currently taking a long time to process new mods, you can download it from the CurseForge page, which is temporarily hosting my mod, until the Modrinth page is up: https://www.curseforge.com/minecraft/mc-mods/resource-screening/preview
 Alternatively, you could choose to download it from
 the [releases](https://github.com/shushi93/Resource-Screening/releases) page. Then, put that jar file in the mods folder
 of your Minecraft folder. I recommend searching it up on YouTube for clearer instructions. The mod should work without
