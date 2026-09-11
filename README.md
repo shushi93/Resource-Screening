@@ -12,11 +12,13 @@ I wanted to solve that, allowing you to individually select the textures you wan
 needing to manually edit the textures in each texture pack, you can now do it in-game.
 
 ## 🔻How to download and use 🔻
+> [!IMPORTANT]
+> The release currently on curseforge (1.21.10.0.1), is a testing version of the mod. Please ensure you have the 1.21.10 version of Motschen's better leaves. You may play around with the buttons to see what they do. My next release should hopefully allow other packs to funtion aswell.
 
 <details>
 <summary>Download</summary>
 
-~~You can download the jar file from the [Modrinth](https://modrinth.com/project/resource-screening) (recommended).~~ [Since Modrinth is currently taking a long time to process new mods, you can download it from the CurseForge page, which is temporarily hosting my mod, until the Modrinth page is up: https://www.curseforge.com/minecraft/mc-mods/resource-screening/preview
+~~You can download the jar file from the [Modrinth](https://modrinth.com/project/resource-screening) (recommended).~~ [Since Modrinth is currently taking a long time to process new mods, you can download it from the CurseForge page, which is temporarily hosting my mod, until the Modrinth page is up: https://www.curseforge.com/minecraft/mc-mods/resource-screening/preview <br>
 Alternatively, you could choose to download it from
 the [releases](https://github.com/shushi93/Resource-Screening/releases) page. Then, put that jar file in the mods folder
 of your Minecraft folder. I recommend searching it up on YouTube for clearer instructions. The mod should work without
