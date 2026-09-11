@@ -13,7 +13,7 @@ needing to manually edit the textures in each texture pack, you can now do it in
 
 ## 🔻How to download and use 🔻
 > [!IMPORTANT]
-> The release currently on curseforge (1.21.10.0.1), is a testing version of the mod. Please ensure you have the 1.21.10 version of Motschen's better leaves. You may play around with the buttons to see what they do. My next release should hopefully allow other packs to funtion aswell.
+> The release currently on curseforge (1.21.10.0.1), is a testing version of the mod. Please ensure you have the 1.21.10 releases of both the Bare Bones texture pack and Faithful x64 packs. More dynamic texture swapping coming in future releases ^_^
 
 <details>
 <summary>Download</summary>
