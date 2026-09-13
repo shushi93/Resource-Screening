@@ -13,7 +13,7 @@ needing to manually edit the textures in each texture pack, you can now do it in
 
 ## 🔻How to download and use 🔻
 > [!IMPORTANT]
-> The release currently on Modrinth (1.21.10.0.1), is a testing version of the mod. Please ensure you have the 1.21.10 releases of both the Bare Bones texture pack and Faithful x64 packs. More dynamic texture swapping coming in future releases ^_^
+> The release currently on Modrinth (1.21.10.0.1), is a testing version of the mod. Please ensure you have the 1.21.10 releases of both the Bare Bones texture pack and Faithful x64 packs. B1 and B2 swaps between the two packs. More dynamic texture swapping coming in future releases ^_^
 
 <details>
 <summary>Download</summary>
