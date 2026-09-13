@@ -70,6 +70,7 @@ public class Zip_Helper {
         try (Stream<Path> pathStream = Files.list(ResourceScreeningClient.pack_directory)) {
             return pathStream.map(Path::getFileName)
                     .map(Path::toString)
+                    .filter(s -> !s.equals("doogile.zip"))
                     .collect(Collectors.toCollection(ArrayList::new));
         } catch (Exception e) {
             LOGGER.error("Failed to read pack names: {}", e.getMessage());
@@ -116,7 +117,11 @@ public class Zip_Helper {
     }
 
     public static boolean does_texture_exist(String texture_location) {
-        try (FileSystem fs = FileSystems.newFileSystem(ResourceScreeningClient.pack_directory.resolve(cleanse("doogile")), Map.of())) {
+        return does_texture_exist("doogile", texture_location);
+    }
+
+    public static boolean does_texture_exist(String pack_name, String texture_location) {
+        try (FileSystem fs = FileSystems.newFileSystem(ResourceScreeningClient.pack_directory.resolve(cleanse(pack_name)), Map.of())) {
             return Files.exists(fs.getPath("assets", "minecraft", "textures").resolve(texture_location));
         } catch (Exception e) {
             LOGGER.error(Arrays.toString(e.getStackTrace()));
