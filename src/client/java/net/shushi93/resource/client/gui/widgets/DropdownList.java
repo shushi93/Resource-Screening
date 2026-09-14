@@ -11,10 +11,12 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.shushi93.resource.ResourceScreening;
+import net.shushi93.resource.client.gui.screens.TextureScreen;
 import net.shushi93.resource.client.util.Zip_Helper;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 /**
  * Creates the dropdown list widget and handles functionality
@@ -30,12 +32,17 @@ public class DropdownList extends AbstractWidget {
     );
     private final Font font = Minecraft.getInstance().font;
     private final ArrayList<String> options = new ArrayList<>(Objects.requireNonNull(Zip_Helper.get_all_pack_names()));
+    private final String src_texture;
+    private final Consumer<String> selection_callback;
+    private int selectedOption;
     private int scroll_amount = 0;
-    private int selectedOption = 0;
     private boolean isExpanded = false;
 
-    public DropdownList(int x, int y, int w, int h) {
+    public DropdownList(int x, int y, int w, int h, String src_texture, String current_selection, Consumer<String> selection_callback) {
         super(x, y, w, h, Component.literal("Test"));
+        this.src_texture = src_texture;
+        this.selectedOption = Math.max(0, options.indexOf(current_selection));
+        this.selection_callback = selection_callback;
     }
 
     @Override
@@ -94,8 +101,10 @@ public class DropdownList extends AbstractWidget {
         if (mouseButtonEvent.button() == 0) { // Left mouse button
             if (isExpanded && !super.isMouseOver(mouseButtonEvent.x(), mouseButtonEvent.y())) {
                 selectedOption = (int) ((mouseButtonEvent.y() - (getY() + this.height) + scroll_amount) / this.height);
+                this.selection_callback.accept(options.get(selectedOption));
+                onClick(selectedOption);
             }
-            this.isExpanded = !this.isExpanded;
+            this.isExpanded = !isExpanded;
             return true;
         }
         return super.mouseClicked(mouseButtonEvent, bl);
@@ -115,5 +124,16 @@ public class DropdownList extends AbstractWidget {
         this.scroll_amount += (int) (-g * 3);
         this.scroll_amount = Math.clamp(this.scroll_amount, 0, this.height * (options.size() - 2));
         return super.mouseScrolled(d, e, f, g);
+    }
+
+    private void onClick(int selectedOption) {
+        String src_pack = options.get(selectedOption);
+        Zip_Helper.removeIfSelected();
+        if (Zip_Helper.does_texture_exist(src_texture)) {
+            Zip_Helper.remove_from_pack(src_texture);
+
+        }
+        if (Zip_Helper.does_texture_exist(src_pack, src_texture)) Zip_Helper.add_to_pack(src_pack, src_texture);
+        TextureScreen.changed = true;
     }
 }
