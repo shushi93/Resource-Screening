@@ -39,7 +39,7 @@ public class DropdownList extends AbstractWidget {
     private boolean isExpanded = false;
 
     public DropdownList(int x, int y, int w, int h, String src_texture, String current_selection, Consumer<String> selection_callback) {
-        super(x, y, w, h, Component.literal("Test"));
+        super(x, y, w, h, null);
         this.src_texture = src_texture;
         this.selectedOption = Math.max(0, options.indexOf(current_selection));
         this.selection_callback = selection_callback;
@@ -131,7 +131,6 @@ public class DropdownList extends AbstractWidget {
         Zip_Helper.removeIfSelected();
         if (Zip_Helper.does_texture_exist(src_texture)) {
             Zip_Helper.remove_from_pack(src_texture);
-
         }
         if (Zip_Helper.does_texture_exist(src_pack, src_texture)) Zip_Helper.add_to_pack(src_pack, src_texture);
         TextureScreen.changed = true;
