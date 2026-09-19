@@ -13,7 +13,7 @@ needing to manually edit the textures in each texture pack, you can now do it in
 
 ## 🔻How to download and use 🔻
 > [!IMPORTANT]
-> The release currently on Modrinth (1.21.10.0.1), is a testing version of the mod. Please ensure you have the 1.21.10 releases of both the Bare Bones texture pack and Faithful x64 packs. B1 and B2 swaps between the two packs. More dynamic texture swapping coming in future releases ^_^
+> The release currently on Modrinth (1.21.10.0.3), is a testing version of the mod. Try to have at least 2 resource packs, and do make sure the have custom textures for leaves. The UI is currently awful, (I'll improve it in future releases) but for now, the dropdown list shows the texture currently selected, and you can just change which texture pack that texture is rendered from.
 
 <details>
 <summary>Download</summary>
@@ -31,15 +31,15 @@ select all the textures you want. To get to the default resource pack screen, yo
 side of the screen.
 <!-- fix the gui description -->
 
-## Features
-- [x] Swap between two packs (bare bones & faithful x64)
+<!--## Features
+
 
 ### WIP Features
 
 - [ ] Individually customise textures 
 - [ ] Edit textures
 - [ ] Support for custom models
-
+-->
 ### Compatibility
 
 - [ ] 1.21.4
