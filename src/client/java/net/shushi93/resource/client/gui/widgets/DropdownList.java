@@ -37,12 +37,18 @@ public class DropdownList extends AbstractWidget {
     private int selectedOption;
     private int scroll_amount = 0;
     private boolean isExpanded = false;
+    private String current_selection;
 
     public DropdownList(int x, int y, int w, int h, String src_texture, String current_selection, Consumer<String> selection_callback) {
         super(x, y, w, h, null);
         this.src_texture = src_texture;
         this.selectedOption = Math.max(0, options.indexOf(current_selection));
         this.selection_callback = selection_callback;
+        this.current_selection = current_selection;
+    }
+
+    public String getCurrent_selection() {
+        return current_selection;
     }
 
     @Override
@@ -92,6 +98,10 @@ public class DropdownList extends AbstractWidget {
         return getX() + this.width * percent / 100;
     }
 
+    public int getCenteredY() {
+        return getCenteredY(0);
+    }
+
     public int getCenteredY(int translate) {
         return getY() + this.height / 2 + translate;
     }
@@ -102,6 +112,7 @@ public class DropdownList extends AbstractWidget {
             if (isExpanded && !super.isMouseOver(mouseButtonEvent.x(), mouseButtonEvent.y())) {
                 selectedOption = (int) ((mouseButtonEvent.y() - (getY() + this.height) + scroll_amount) / this.height);
                 this.selection_callback.accept(options.get(selectedOption));
+                this.current_selection = options.get(selectedOption);
                 onClick(selectedOption);
             }
             this.isExpanded = !isExpanded;
