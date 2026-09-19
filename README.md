@@ -6,7 +6,7 @@ If you're someone like me who has a lot of resource packs, like a whole stack of
 textures might be a pain
 
 <br>
-<img width="250" height="300" alt="Resource Selection screen" src="https://github.com/user-attachments/assets/5c289395-76d0-4209-9b4b-6b52de7da961" />
+<img width="500" height="300" alt="Screenshot 2026-09-19 105308" src="https://github.com/user-attachments/assets/f9b03524-f024-4fd7-9057-7c2d7be4fde4" />
 
 I wanted to solve that, allowing you to individually select the textures you want from each resource pack. Instead of
 needing to manually edit the textures in each texture pack, you can now do it in-game.
