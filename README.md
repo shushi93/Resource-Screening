@@ -4,8 +4,9 @@
 
 If you're someone like me who has a lot of resource packs, like a whole stack of them, organizing and customizing your
 textures might be a pain
+
 <br>
-<img width="350" height="300" alt="image" src="https://github.com/user-attachments/assets/ff0bf992-46b1-4f4c-8c87-68d75e56f17f" />
+<img width="250" height="300" alt="Resource Selection screen" src="https://github.com/user-attachments/assets/5c289395-76d0-4209-9b4b-6b52de7da961" />
 <br><sub>Notice the size of the scroll bar</sub>
 
 I wanted to solve that, allowing you to individually select the textures you want from each resource pack. Instead of
