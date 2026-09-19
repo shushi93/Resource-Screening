@@ -17,6 +17,7 @@ import net.shushi93.resource.client.gui.widgets.filter;
 import net.shushi93.resource.client.util.JsonWriter;
 import net.shushi93.resource.client.util.Zip_Helper;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 
@@ -30,6 +31,7 @@ public class TextureScreen extends Screen {
     private final Minecraft mc = Minecraft.getInstance();
     private final PackRepository pr = mc.getResourcePackRepository();
     private final Map<String, String> saved_selections = JsonWriter.get_map();
+    private final ArrayList<DropdownTextureRenderer> dropdowns = new ArrayList<>();
 
     public TextureScreen(Component title, Screen parent) {
         super(title);
@@ -70,17 +72,19 @@ public class TextureScreen extends Screen {
         int i = 0;
         for (String texture : Objects.requireNonNull(Zip_Helper.get_textures("Better-Leaves-9.5"))) {
             int columns = Math.max(1, ((this.width - 20) + 5) / (120 + 5));
-
-            this.addRenderableWidget(new DropdownTextureRenderer(
-                    20 + (i % columns) * (120 + 5),
-                    80 + (i / columns) * (20 + 30),
+            DropdownTextureRenderer d = new DropdownTextureRenderer(
+                    20 + (i % columns) * (120),
+                    75 + (i / columns) * (55),
                     120, 20, texture,
-                    saved_selections.getOrDefault(texture, Zip_Helper.get_all_pack_names().stream().findFirst().toString()),
+                    saved_selections.getOrDefault(texture, Zip_Helper.get_all_pack_names().stream().toList().getFirst()),
                     (new_selection) -> {
                         saved_selections.put(texture, new_selection);
                         JsonWriter.write_json(saved_selections);
-                    })
-            );
+                    });
+
+            dropdowns.add(d);
+
+            this.addRenderableWidget(d);
             i++;
         }
         //h: 250, w: 400
@@ -95,6 +99,10 @@ public class TextureScreen extends Screen {
             mc.options.save();
             mc.reloadResourcePacks();
             changed = false;
+
+            for (DropdownTextureRenderer d : dropdowns) {
+                d.close();
+            }
         }
         mc.setScreen(this.parent);
     }
