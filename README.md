@@ -12,13 +12,18 @@ I wanted to solve that, allowing you to individually select the textures you wan
 needing to manually edit the textures in each texture pack, you can now do it in-game.
 
 ## 🔻How to download and use 🔻
+
 > [!IMPORTANT]
-> The release currently on Modrinth (1.21.10.0.3), is a testing version of the mod. Try to have at least 2 resource packs, and do make sure the have custom textures for leaves. The UI is currently awful, (I'll improve it in future releases) but for now, the dropdown list shows the texture currently selected, and you can just change which texture pack that texture is rendered from.
+> The release currently on Modrinth (1.21.10.0.3), is a testing version of the mod. Try to have at least 2 resource
+packs, and do make sure they have custom textures for leaves. The UI is currently awful, (I'll improve it in future
+releases) but for now, the dropdown list shows the texture currently selected, and you can just change which texture
+pack that texture is rendered from.
 
 <details>
 <summary>Download</summary>
-  
-You can download the jar file from the [Modrinth](https://modrinth.com/project/resource-screening) (recommended). Alternatively, you could choose to download it from
+
+You can download the jar file from the [Modrinth](https://modrinth.com/project/resource-screening) (recommended).
+Alternatively, you could choose to download it from
 the [releases](https://github.com/shushi93/Resource-Screening/releases) page. Then, put that jar file in the mods folder
 of your Minecraft folder. I recommend searching it up on YouTube for clearer instructions. The mod should work without
 any further configuration.
@@ -40,6 +45,7 @@ side of the screen.
 - [ ] Edit textures
 - [ ] Support for custom models
 -->
+
 ### Compatibility
 
 - [ ] 1.21.4
