@@ -16,7 +16,7 @@ public class filter {
     public static SpriteIconButton filter_btn(int i, Button.OnPress onPress, boolean bl) {
         return SpriteIconButton.builder(Component.translatable("gui.components.filter.filterbtn"), onPress, bl)
                 .width(i)
-                .sprite(ResourceLocation.fromNamespaceAndPath(ResourceScreening.MOD_ID, "filter"), 20, 20) //TODO add highlighted and disabled images
+                .sprite(ResourceLocation.fromNamespaceAndPath(ResourceScreening.MOD_ID, "filter"), 20, 20)
                 .build();
     }
 }
