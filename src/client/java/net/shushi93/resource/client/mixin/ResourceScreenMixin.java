@@ -12,7 +12,6 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 import java.util.function.Supplier;
 
-
 @SuppressWarnings("rawtypes")
 @Mixin(OptionsScreen.class)
 public abstract class ResourceScreenMixin extends Screen {
@@ -20,11 +19,14 @@ public abstract class ResourceScreenMixin extends Screen {
         super(component);
     }
 
+    /**
+     * Redirects "Resource Packs" button in the Options screen to mod screen
+     */
     @Definition(id = "openScreenButton", method = "Lnet/minecraft/client/gui/screens/options/OptionsScreen;openScreenButton(Lnet/minecraft/network/chat/Component;Ljava/util/function/Supplier;)Lnet/minecraft/client/gui/components/Button;")
     @Definition(id = "RESOURCEPACK", field = "Lnet/minecraft/client/gui/screens/options/OptionsScreen;RESOURCEPACK:Lnet/minecraft/network/chat/Component;")
     @Expression("this.openScreenButton(RESOURCEPACK, ?)")
     @ModifyArg(method = "init", at = @At("MIXINEXTRAS:EXPRESSION"))
-    private Supplier redirectButton(@SuppressWarnings("ParameterCanBeLocal") Supplier supplier){
+    private Supplier redirectButton(@SuppressWarnings("ParameterCanBeLocal") Supplier supplier) {
         supplier = () -> new TextureScreen(Component.empty(), this);
         return supplier;
     }
