@@ -6,6 +6,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
@@ -18,9 +19,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-/**
- * Creates the dropdown list widget and handles functionality
- */
 public class DropdownList extends AbstractWidget {
     private static final WidgetSprites HEADER_BOX = new WidgetSprites(
             ResourceLocation.withDefaultNamespace("widget/text_field"),
@@ -32,39 +30,132 @@ public class DropdownList extends AbstractWidget {
     );
     private final Font font = Minecraft.getInstance().font;
     private final ArrayList<String> options = new ArrayList<>(Objects.requireNonNull(Zip_Helper.get_all_pack_names()));
-    private final String src_texture;
     private final Consumer<String> selection_callback;
+    private final boolean b;
+    private String current_selection;
     private int selectedOption;
     private int scroll_amount = 0;
     private boolean isExpanded = false;
-    private String current_selection;
 
-    public DropdownList(int x, int y, int w, int h, String src_texture, String current_selection, Consumer<String> selection_callback) {
-        super(x, y, w, h, null);
-        this.src_texture = src_texture;
+    /**
+     * Creates DropdownList with (optional) boolean to check whether class was invoked via DropdownTextureRenderer
+     *
+     * @param src_texture        The texture the dropdown will be changing
+     * @param current_selection  The current texture selected
+     * @param selection_callback Callback to store selection
+     * @param b                  Whether class was invoked via DropdownTextureRenderer
+     */
+    public DropdownList(int x, int y, int w, int h, String src_texture, String current_selection, Consumer<String> selection_callback, boolean b) {
+        super(x, y, w, h, Component.literal(src_texture));
+        this.b = b;
         this.selectedOption = Math.max(0, options.indexOf(current_selection));
-        this.selection_callback = selection_callback;
         this.current_selection = current_selection;
+        this.selection_callback = selection_callback;
+        this.height = h / 2;
     }
 
-    public String getCurrent_selection() {
-        return current_selection;
+    public String getCurrentSelection() {
+        return this.current_selection;
     }
 
+    /**
+     * Renders the dropdown box
+     *
+     * @param i mouse x
+     * @param j mouse y
+     */
     @Override
     protected void renderWidget(GuiGraphics guiGraphics, int i, int j, float f) {
         guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED,
-                HEADER_BOX.get(this.isActive(), this.isHovered()),
+                HEADER_BOX.get(this.isActive(), this.isHoveredOrFocused()),
                 this.getX(), this.getY(), this.width, this.height, 0xFFFFFFFF);
 
-        guiGraphics.drawCenteredString(this.font, this.isExpanded ? "▲" : "▼", getXwithOffset(90), getCenteredY(-3), /*color*/ 0xFFFFFFFF); //dropdown arrow
+        guiGraphics.drawCenteredString(this.font, this.isExpanded ? "▲" : "▼", getXWithOffset(90), getCenteredY(-3), /*color*/ 0xFFFFFFFF); //dropdown arrow
         AbstractWidget.renderScrollingString(
                 guiGraphics, this.font, Component.literal(options.get(selectedOption)),
-                getXwithOffset(5), getY(), getXwithOffset(85),
+                getXWithOffset(5), getY(), getXWithOffset(85),
                 getY() + this.height, 0xFFFFFFFF
         );
+    }
 
-        if (isExpanded) {
+    /**
+     * Checks whether an option was selected, saves the selection if selected and closes the dropdown
+     */
+    @Override
+    public boolean mouseClicked(MouseButtonEvent mouseButtonEvent, boolean isDoubleClick) {
+        if (mouseButtonEvent.button() == 0) { // Left mouse button
+            if (isExpanded && !super.isMouseOver(mouseButtonEvent.x(), mouseButtonEvent.y())) {
+                selectedOption = (int) ((mouseButtonEvent.y() - (getY() + this.height) + scroll_amount) / this.height);
+                this.selection_callback.accept(options.get(selectedOption));
+                this.current_selection = options.get(selectedOption);
+                onClick(selectedOption);
+            }
+            this.isExpanded = !isExpanded;
+        }
+        return super.mouseClicked(mouseButtonEvent, isDoubleClick);
+    }
+
+    @Override
+    public boolean isMouseOver(double d, double e) {
+        return super.isMouseOver(d, e) || (isExpanded && areCoordinatesInRectangle(d, e, getX(), getY() + this.height, this.width, this.height * 2));
+    }
+
+    @Override
+    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
+
+    }
+
+    /**
+     * Adjust y-coordinate if class invoked by DropdownTextureRenderer, due to its texture renderer box
+     */
+    @Override
+    public int getY() {
+        return b ? super.getY() + this.height : super.getY();
+    }
+
+    @Override
+    public boolean mouseScrolled(double d, double e, double f, double g) {
+        this.scroll_amount += (int) (-g * 3);
+        this.scroll_amount = Math.clamp(this.scroll_amount, 0, this.height * (options.size() - 2));
+        return super.mouseScrolled(d, e, f, g);
+    }
+
+    @Override
+    public boolean keyPressed(KeyEvent event) {
+        if (!this.isActive()) {
+            return false;
+        } else if (event.isSelection()) {
+            this.playDownSound(Minecraft.getInstance().getSoundManager());
+            this.isExpanded = !this.isExpanded;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Get x-coordinate with offset based on percentage of width
+     */
+    public int getXWithOffset(int percent) {
+        return getX() + this.width * percent / 100;
+    }
+
+    public int getCenteredY() {
+        return getCenteredY(0);
+    }
+
+    /**
+     * Get y-coordinate centered in the dropdown, with an optional height translation
+     */
+    public int getCenteredY(int translate) {
+        return getY() + this.height / 2 + translate;
+    }
+
+    /**
+     * Renders dropdown. In a separate method to allow dropdown to appear over other widgets
+     */
+    public void renderDecorations(GuiGraphics guiGraphics, int i, int j) {
+        if (this.isExpanded) {
             guiGraphics.enableScissor(getX() - 1, getY() + this.height + 1, getX() + this.width + 1, getY() + this.height * 3 + 1);
             guiGraphics.fill(getX() - 1, getY() + this.height, getX() + this.width + 1, getY() + this.height * 3 + 1, 0x2BFFFFFF); //translucent outline box
 
@@ -82,7 +173,7 @@ public class DropdownList extends AbstractWidget {
 
                 AbstractWidget.renderScrollingString(
                         guiGraphics, this.font, Component.literal(options.get(k)),
-                        getXwithOffset(5), drop_y, getXwithOffset(95),
+                        getXWithOffset(5), drop_y, getXWithOffset(95),
                         getY() + this.height * (k + 2) - this.scroll_amount, 0xFFFFFFFF
                 );
             }
@@ -90,60 +181,36 @@ public class DropdownList extends AbstractWidget {
         }
     }
 
-    @Override
-    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
-    }
-
-    public int getXwithOffset(int percent) {
-        return getX() + this.width * percent / 100;
-    }
-
-    public int getCenteredY() {
-        return getCenteredY(0);
-    }
-
-    public int getCenteredY(int translate) {
-        return getY() + this.height / 2 + translate;
-    }
-
-    @Override
-    public boolean mouseClicked(MouseButtonEvent mouseButtonEvent, boolean bl) {
-        if (mouseButtonEvent.button() == 0) { // Left mouse button
-            if (isExpanded && !super.isMouseOver(mouseButtonEvent.x(), mouseButtonEvent.y())) {
-                selectedOption = (int) ((mouseButtonEvent.y() - (getY() + this.height) + scroll_amount) / this.height);
-                this.selection_callback.accept(options.get(selectedOption));
-                this.current_selection = options.get(selectedOption);
-                onClick(selectedOption);
-            }
-            this.isExpanded = !isExpanded;
-            return true;
-        }
-        return super.mouseClicked(mouseButtonEvent, bl);
-    }
-
+    /**
+     * @param d x-coordinate of mouse
+     * @param e y-coordinate of mouse
+     */
     public boolean areCoordinatesInRectangle(double d, double e, int x, int y, int w, int h) {
         return d >= x && e >= y && d < x + w && e < y + h;
     }
 
-    @Override
-    public boolean isMouseOver(double d, double e) {
-        return super.isMouseOver(d, e) || (isExpanded && areCoordinatesInRectangle(d, e, getX(), getY() + this.height, this.width, this.height * 2));
+    public boolean superIsMouseOver(double d, double e) {
+        return super.isMouseOver(d, e);
     }
 
-    @Override
-    public boolean mouseScrolled(double d, double e, double f, double g) {
-        this.scroll_amount += (int) (-g * 3);
-        this.scroll_amount = Math.clamp(this.scroll_amount, 0, this.height * (options.size() - 2));
-        return super.mouseScrolled(d, e, f, g);
-    }
-
+    /**
+     * Called on option selection. Removes texture pack from currently active selection, and adds/removes texture
+     * to/from the pack.
+     *
+     * @param selectedOption the index of the selected option
+     */
     private void onClick(int selectedOption) {
         String src_pack = options.get(selectedOption);
+        String src_texture = super.getMessage().getString();
         Zip_Helper.removeIfSelected();
         if (Zip_Helper.does_texture_exist(src_texture)) {
             Zip_Helper.remove_from_pack(src_texture);
         }
         if (Zip_Helper.does_texture_exist(src_pack, src_texture)) Zip_Helper.add_to_pack(src_pack, src_texture);
         TextureScreen.changed = true;
+    }
+
+    public void setExpanded(boolean expanded) {
+        this.isExpanded = expanded;
     }
 }
